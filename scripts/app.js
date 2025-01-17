@@ -7,19 +7,18 @@ const movieQuote = document.querySelector('.movie-info-quote');
 const movieOverview = document.querySelector('.movie-info-overview');
 const footerYear = document.querySelector('.year');
 
-
 const modal = document.querySelector('#myModal');
 const modalCloseBtn = document.querySelector('.closeBtn');
 const modalPoster = document.querySelector('.movie-poster-modal');
-const modalTitle = modal.querySelector('h1');
-
+const modalContent = document.querySelector('.modal-content'); // For dynamic title
 
 window.onload = () => {
-    const url = 'https://api.themoviedb.org/3/movie/516729?api_key=4ca94f8b470d7e34bd3f59c3914295c8';
+    const url = 'https://api.themoviedb.org/3/movie/426063?api_key=4ca94f8b470d7e34bd3f59c3914295c8';
 
     fetch(url)
         .then(response => response.json())
         .then(data => {
+
             movieTitle.textContent = data.title;
 
             const date = new Date(data.release_date);
@@ -31,7 +30,7 @@ window.onload = () => {
             const posterUrl = `https://image.tmdb.org/t/p/w600_and_h900_bestv2${data.poster_path}`;
             moviePoster.src = posterUrl;
             moviePoster.alt = `${data.title} Poster`;
-            
+
             let genresToDisplay = '';
             data.genres.forEach(genre => {
                 genresToDisplay += `${genre.name}, `;
@@ -43,10 +42,12 @@ window.onload = () => {
 
             modalPoster.src = posterUrl;
             modalPoster.alt = `${data.title} Poster`;
+
+            const modalTitle = document.createElement('h1');
             modalTitle.textContent = `${data.title} (${date.getFullYear()})`;
+            modalContent.appendChild(modalTitle);
         });
 };
-
 
 moviePoster.addEventListener('click', () => {
     modal.style.display = 'flex';
